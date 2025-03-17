@@ -1,6 +1,7 @@
 import { useState } from "react";
 import s from "./App.module.css";
 import * as yup from "yup";
+import { useRef } from "react";
 
 export const AppValidTxt = () => {
   const [pass, setPass] = useState("");
@@ -26,10 +27,17 @@ export const AppValidTxt = () => {
     return errorMessage;
   };
 
+  const submitRef = useRef(null);
+
   const onPasswordChange = ({ target }) => {
     setPass(target.value);
     let error = validAndErrorFunc(passwordChangeScheme, target.value);
     setErrorLogin(error);
+    if (target.value.length === 10) {
+      submitRef.current.focus();
+      error = "Не пугайся, я просто useRef использую";
+      setErrorLogin(error);
+    }
   };
 
   const onBlurPassword = ({ target }) => {
@@ -55,6 +63,7 @@ export const AppValidTxt = () => {
             value={pass}
           />
           <button
+            ref={submitRef}
             disabled={errorLogin !== null || pass.length < 1}
             type="submit"
           >

@@ -1,6 +1,7 @@
 import { use, useState } from "react";
 import s from "./App.module.css";
 import * as yup from "yup";
+import { useRef } from "react";
 
 //сперва пишем схему валидации для yup
 const loginChangeScheme = yup
@@ -31,11 +32,15 @@ const validateAndGetErrorMessage = (scheme, value) => {
 export const AppValidation = () => {
   const [login, setLogin] = useState("");
   const [loginError, setLoginError] = useState("");
+  const submitButtonRef = useRef(null);
   const onLoginChange = ({ target }) => {
     setLogin(target.value);
     const error = validateAndGetErrorMessage(loginChangeScheme, target.value);
 
     setLoginError(error);
+    if (target.value.length === 5) {
+      submitButtonRef.current.focus();
+    }
   };
 
   const onLoginBlur = () => {
@@ -65,7 +70,11 @@ export const AppValidation = () => {
             value={login}
             placeholder="Ваш логин"
           />
-          <button disabled={loginError !== null} type="submit">
+          <button
+            ref={submitButtonRef}
+            disabled={loginError !== null}
+            type="submit"
+          >
             Отправить форму
           </button>
           {loginError && <div className={s.errorLabel}>{loginError}</div>}
