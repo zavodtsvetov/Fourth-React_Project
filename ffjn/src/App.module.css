@@ -1,0 +1,15 @@
+.app {
+  text-align: center;
+}
+
+.content {
+  display: none;
+}
+
+input[type="checkbox"]:checked + .content {
+  display: block;
+}
+
+.errorLabel {
+  color: brown;
+}
